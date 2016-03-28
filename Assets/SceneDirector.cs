@@ -11,10 +11,14 @@ public class SceneDirector : MonoBehaviour {
 	private int conversationPoint;
 	private bool isTalking;
 	private AudioSource[] audioClips;
+	public Animator dudeAnimations;
+	public Animator chickAnimations;
 	// Use this for initialization
 	void Start () {
 		AudioSource[] MarySources = chick.GetComponents<AudioSource>();
 		AudioSource[] JohnSources = dude.GetComponents<AudioSource>();
+		dudeAnimations = dude.GetComponent<Animator>();
+		chickAnimations = chick.GetComponent<Animator>();
 		ShuffleArrays(JohnSources, MarySources);
 		isTalking = false;
 		conversationPoint = 0;
@@ -34,21 +38,18 @@ public class SceneDirector : MonoBehaviour {
 		audioClips = new AudioSource[JohnSources.Length * 2];
 		int k = 0;
 		for(int i = 0; i < JohnSources.Length; i++) {
-			Debug.Log(k);
 			audioClips[k] = JohnSources[i];
 			k++;
-			Debug.Log(k);
 			audioClips[k] = MarySources[i];
 			k++;
-		}
-		for(int i = 0; i < audioClips.Length; i++) {
-			Debug.Log(audioClips[i].clip);
 		}
 	}
 
 	IEnumerator PlayAudio() {
 		isTalking = true;
 		if(conversationPoint < audioClips.Length) {
+			dudeAnimations.SetInteger("conversationPoint", conversationPoint);
+			Debug.Log(dudeAnimations.GetInteger("conversationPoint"));
 			dudeGhost.SetInteger("conversationPoint", conversationPoint);
 			chickGhost.SetInteger("conversationPoint", conversationPoint);
 			audioClips[conversationPoint].Play();
