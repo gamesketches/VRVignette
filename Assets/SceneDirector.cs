@@ -25,6 +25,9 @@ public class SceneDirector : MonoBehaviour {
 		if(!isTalking) {
 			StartCoroutine(PlayAudio());
 		}
+		if(Input.GetKeyDown(KeyCode.R)){
+			conversationPoint = 0;
+		}
 	}
 
 	void ShuffleArrays(AudioSource[] JohnSources, AudioSource[] MarySources) {
@@ -46,6 +49,8 @@ public class SceneDirector : MonoBehaviour {
 	IEnumerator PlayAudio() {
 		isTalking = true;
 		if(conversationPoint < audioClips.Length) {
+			dudeGhost.SetInteger("conversationPoint", conversationPoint);
+			chickGhost.SetInteger("conversationPoint", conversationPoint);
 			audioClips[conversationPoint].Play();
 			while(audioClips[conversationPoint].isPlaying) {
 				yield return null;
